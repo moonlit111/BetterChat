@@ -139,6 +139,7 @@ module.exports = {
     getConfigData,
     updatePlayerData,
     getPlayerData,
-    apiParsing
+    apiParsing,
+    Info
 }
 

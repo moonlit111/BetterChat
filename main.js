@@ -1,4 +1,4 @@
-const { GUI } = require("./BetterChat/modules/gui");
+const { GUI, formatGUI } = require("./BetterChat/modules/gui");
 const { getConfigData, getPlayerData, updatePlayerData } = require("./BetterChat/modules/data");
 const event = require("./BetterChat/modules/event");
 const Prefix = getConfigData('config', "Prefix");
@@ -19,20 +19,22 @@ mc.listen("onServerStarted", () => {
     BetterChat.mandatory('setitle', ParamType.Enum, 'setitle', 1);
     BetterChat.overload(['setitle', 'player', 'string']);
 
-    BetterChat.setEnum('cmd', ['gui']);
+    BetterChat.setEnum('cmd', ['gui', 'format']);
     BetterChat.mandatory('cmd', ParamType.Enum, 'cmd', 1);
     BetterChat.overload(['cmd']);
 
     BetterChat.setCallback((_cmd, ori, out, res) => {
-        let Player = ori.player;
+        const Player = ori.player;
 
         if (res.cmd == "gui") {
             return Player ? GUI(Player) : out.error("控制台无法使用菜单");
+        } else if (res.cmd == "format") {
+            return Player ? formatGUI(Player) : out.error("控制台无法使用菜单");
         }
         
-        let resPlayer = res.player[0];
-        let contents = res.string;
-        let playerObj = getPlayerData(resPlayer.realName);
+        const resPlayer = res.player[0];
+        const contents = res.string;
+        const playerObj = getPlayerData(resPlayer.realName);
 
         if (res.rename == "rename") {
             if (!Player.isOP() && resPlayer.realName != Player.realName) return out.error(Prefix + "你没有权限更改他人的昵称"); //判断是否为OP
