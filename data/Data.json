@@ -1,0 +1,20 @@
+{
+    "data": [
+        {
+            "name": "IcelandDog21",
+            "nick": "a",
+            "title": "答辩",
+            "message": "",
+            "time": 0,
+            "chat_format": "aa{player_titles}<{player_name}> {player_msg}"
+        },
+        {
+            "name": "BattingBoot6802",
+            "nick": "aac",
+            "title": null,
+            "message": "",
+            "time": 0,
+            "chat_format": "{player_titles}<{player_name}> {player_msg}"
+        }
+    ]
+}
