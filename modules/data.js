@@ -1,3 +1,26 @@
+/*
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            佛祖保佑       永无BUG
+*/
+
 const Info = new JsonConfigFile("./plugins/BetterChat/data/Data.json");
 Info.init("data", []);
 const conf = new JsonConfigFile("./plugins/BetterChat/config.json");
@@ -35,14 +58,14 @@ function getConfigData(type, key) {
  * @param {number} time - 气泡持续时间（秒）
  * @returns {void} - 该函数用于修改玩家数据文件 不返回任何值
  */
-function updatePlayerData(name, nick, title, message, time) {
+function updatePlayerData(name, nick, title, message, time, chat_format) {
     let data = Info.get("data") || [];
 
     const existingIndex = data.findIndex(player => player.name === name); // 查找玩家 返回其在数组中的索引 如果找不到该玩家 则返回 -1
 
     if (existingIndex !== -1) {
-        data[existingIndex] = { ...data[existingIndex], nick, title, message, time }; // 更新现有玩家数据
-    } else data.push({ name, nick, title, message, time }); // 添加新玩家数据
+        data[existingIndex] = { ...data[existingIndex], nick, title, message, time, chat_format }; // 更新现有玩家数据
+    } else data.push({ name, nick, title, message, time, chat_format }); // 添加新玩家数据
 
     Info.set("data", data); // 写入文件
 }
@@ -118,18 +141,27 @@ function getValueFromPath(object, path) {
 
     return object; // 返回查找结果
 }
+function getPlayerList() {
+    const playerList = [];
+    const data = Info.get("data") || [];
+    for (let i in data) {
+        playerList.push(data[i].name);
+    }
+    return playerList;
+}
+
 
 setInterval(() => {
     const players = mc.getOnlinePlayers(); // 获取在线玩家对象数组
     players.forEach(player => { // 遍历玩家对象数组
         let playerObj = getPlayerData(player.realName); // 获取玩家数据对象
-        let playerSetName = playerObj.title ? `[${playerObj.title}§r] ${playerObj.nick}` : playerObj.nick; // 获取玩家聊天格式
+        let playerSetName = playerObj.title ? `[${playerObj.title}§r] ${playerObj.nick}§r` : playerObj.nick; // 获取玩家聊天格式
         let displayName = apiParsing(playerSetName, player); // api解析
 
         if (playerObj.time === 0) {
             player.rename(displayName); // 复原玩家名称
         } else {
-            updatePlayerData(player.realName, playerObj.nick, playerObj.title, playerObj.message, playerObj.time - 1); // 减少时间
+            updatePlayerData(player.realName, playerObj.nick, playerObj.title, playerObj.message, playerObj.time - 1, playerObj.chat_format); // 减少时间
             player.rename(`${playerObj.message}\n${displayName}`); // 设置头顶聊天气泡
         }
     });
@@ -140,6 +172,7 @@ module.exports = {
     updatePlayerData,
     getPlayerData,
     apiParsing,
+    getPlayerList,
     Info
 }
 

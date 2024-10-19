@@ -1,5 +1,27 @@
+/*
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            佛祖保佑       永无BUG
+*/
+
 const { getConfigData, getPlayerData, updatePlayerData, apiParsing } = require("./data");
-// const { PAPI } = require(`../../GMLIB-LegacyRemoteCallApi/lib/BEPlaceholderAPI-JS.js`);
 
 mc.listen("onChat", (player, msg) => {//玩家消息
     const playerObj = getPlayerData(player.realName); // 获取玩家数据对象
@@ -10,13 +32,13 @@ mc.listen("onChat", (player, msg) => {//玩家消息
     }
 
     let strObj = playerObj.chat_format // 使用 replace 方法替换字符串中的占位符
-        .replace(/\{player_name}/g, playerObj.nick)
+        .replace(/\{player_name}/g, `${playerObj.nick}§r`)
         .replace(/\{player_msg}/g, msg)
         .replace(/\{player_titles}/g, playerObj.title ? `[${playerObj.title}§r] ` : "");
 
     strObj = apiParsing(strObj, player); // 解析API字符串
 
-    updatePlayerData(player.realName, playerObj.nick, playerObj.title, msg, getConfigData('config', "Msg_duration")); // 更新玩家数据
+    updatePlayerData(player.realName, playerObj.nick, playerObj.title, msg, getConfigData('config', "Msg_duration"), playerObj.chat_format); // 更新玩家数据
 
     mc.broadcast(strObj);//游戏内消息输出
 
@@ -36,5 +58,5 @@ mc.listen('onPreJoin', (player) => {
         chat_format: "{player_titles}<{player_name}> {player_msg}"
     };
 
-    updatePlayerData(player.realName, playerData.nick, playerData.title, playerData.message, 0); // 更新玩家数据
+    updatePlayerData(player.realName, playerData.nick, playerData.title, playerData.message, 0, playerData.chat_format); // 更新玩家数据
 });

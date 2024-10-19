@@ -1,3 +1,26 @@
+/*
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            佛祖保佑       永无BUG
+*/
+
 const { GUI, formatGUI } = require("./BetterChat/modules/gui");
 const { getConfigData, getPlayerData, updatePlayerData } = require("./BetterChat/modules/data");
 const event = require("./BetterChat/modules/event");
@@ -24,7 +47,7 @@ mc.listen("onServerStarted", () => {
     BetterChat.overload(['cmd']);
 
     BetterChat.setCallback((_cmd, ori, out, res) => {
-        const Player = ori.player;
+        const Player = ori.player; // 玩家对象
 
         if (res.cmd == "gui") {
             return Player ? GUI(Player) : out.error("控制台无法使用菜单");
@@ -32,19 +55,19 @@ mc.listen("onServerStarted", () => {
             return Player ? formatGUI(Player) : out.error("控制台无法使用菜单");
         }
         
-        const resPlayer = res.player[0];
-        const contents = res.string;
-        const playerObj = getPlayerData(resPlayer.realName);
+        const resPlayer = res.player[0]; // 被操作的玩家对象
+        const contents = res.string; // 回调的输入内容
+        const playerObj = getPlayerData(resPlayer.realName); // 获取玩家数据对象
 
         if (res.rename == "rename") {
             if (!Player.isOP() && resPlayer.realName != Player.realName) return out.error(Prefix + "你没有权限更改他人的昵称"); //判断是否为OP
-            updatePlayerData(resPlayer.realName, contents, playerObj.title, "", 0);
+            updatePlayerData(resPlayer.realName, contents, playerObj.title, "", 0, playerObj.chat_format);
             Player.tell(Prefix + resPlayer.realName + "的昵称已修改为: " + contents);
         }
 
         if (res.setitle == "setitle") {
             if (!Player.isOP()) return Player.tell(Prefix + "你没有权限设置称号"); //判断是否为OP
-            updatePlayerData(resPlayer.realName, playerObj.nick, contents, "", 0);
+            updatePlayerData(resPlayer.realName, playerObj.nick, contents, "", 0, playerObj.chat_format);
             mc.broadcast(`${Prefix} "恭喜玩家" ${resPlayer.realName} "获得" ${contents} 称号`);
         }
 
