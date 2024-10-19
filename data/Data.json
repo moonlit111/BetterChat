@@ -2,11 +2,11 @@
     "data": [
         {
             "name": "IcelandDog21",
-            "nick": "a",
-            "title": "答辩",
-            "message": "",
+            "nick": "aaaa",
+            "title": "aaa",
+            "message": "{pos}",
             "time": 0,
-            "chat_format": "aa{player_titles}<{player_name}> {player_msg}"
+            "chat_format": "{player_titles} {player_name}>> {player_msg}"
         },
         {
             "name": "BattingBoot6802",
@@ -14,7 +14,7 @@
             "title": null,
             "message": "",
             "time": 0,
-            "chat_format": "{player_titles}<{player_name}> {player_msg}"
+            "chat_format": "{player_titles} {player_name}>> {player_msg}"
         }
     ]
 }
