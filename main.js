@@ -76,6 +76,7 @@ mc.listen("onServerStarted", () => {
     BetterChat.setup();
 });
 
+// 导出 updataPlayerData , getPlayerData , GUI 函数
 ll.exports(updatePlayerData,'BetterChat_updataPlayersData','updata_BetterChat_PlayersData');
 ll.exports(getPlayerData,'BetterChat_getPlayerData','get_BetterChat_PlayerData');
 ll.exports(GUI,'BetterChat_mainGUI','BetterChat_mainGUI');
