@@ -75,3 +75,7 @@ mc.listen("onServerStarted", () => {
 
     BetterChat.setup();
 });
+
+ll.exports(updatePlayerData,'BetterChat_updataPlayersData','updata_BetterChat_PlayersData');
+ll.exports(getPlayerData,'BetterChat_getPlayerData','get_BetterChat_PlayerData');
+ll.exports(GUI,'BetterChat_mainGUI','BetterChat_mainGUI');
