@@ -56,16 +56,18 @@ function getConfigData(type, key) {
  * @param {string} title - 玩家的称号
  * @param {string} message - 玩家的消息
  * @param {number} time - 气泡持续时间（秒）
+ * @param {string} chat_format - 聊天消息格式
+ * @param {string} chat_bubbles - 聊天头顶气泡的格式
  * @returns {void} - 该函数用于修改玩家数据文件 不返回任何值
  */
-function updatePlayerData(name, nick, title, message, time, chat_format) {
+function updatePlayerData(name, nick, title, message, time, chat_format, chat_bubbles) {
     let data = Info.get("data") || [];
 
     const existingIndex = data.findIndex(player => player.name === name); // 查找玩家 返回其在数组中的索引 如果找不到该玩家 则返回 -1
 
     if (existingIndex !== -1) {
-        data[existingIndex] = { ...data[existingIndex], nick, title, message, time, chat_format }; // 更新现有玩家数据
-    } else data.push({ name, nick, title, message, time, chat_format }); // 添加新玩家数据
+        data[existingIndex] = { ...data[existingIndex], nick, title, message, time, chat_format, chat_bubbles }; // 更新现有玩家数据
+    } else data.push({ name, nick, title, message, time, chat_format, chat_bubbles }); // 添加新玩家数据
 
     Info.set("data", data); // 写入文件
 }
@@ -155,13 +157,17 @@ setInterval(() => {
     const players = mc.getOnlinePlayers(); // 获取在线玩家对象数组
     players.forEach(player => { // 遍历玩家对象数组
         let playerObj = getPlayerData(player.realName); // 获取玩家数据对象
-        let playerSetName = playerObj.title ? `[${playerObj.title}§r] ${playerObj.nick}§r` : playerObj.nick; // 获取玩家聊天格式
-        let displayName = apiParsing(playerSetName, player); // api解析
+        let displayName = playerObj.chat_bubbles // 使用 replace 方法替换字符串中的占位符
+            .replace(/\{player_name}/g, `${playerObj.nick}§r`)
+            .replace(/\{player_msg}/g, playerObj.message)
+            .replace(/\{player_titles}/g, playerObj.title ? `[${playerObj.title}§r] ` : "");
+
+        displayName = apiParsing(displayName, player); // 解析API字符串
 
         if (playerObj.time === 0) {
             player.rename(displayName); // 复原玩家名称
         } else {
-            updatePlayerData(player.realName, playerObj.nick, playerObj.title, playerObj.message, playerObj.time - 1, playerObj.chat_format); // 减少时间
+            updatePlayerData(player.realName, playerObj.nick, playerObj.title, playerObj.message, playerObj.time - 1, playerObj.chat_format, playerObj.chat_bubbles); // 减少时间
             player.rename(`${playerObj.message}\n${displayName}`); // 设置头顶聊天气泡
         }
     });

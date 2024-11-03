@@ -74,7 +74,7 @@ function setTitleGUI(player) {//设置名称
                 const contents = id[1]; // 回调的输入内容
 
                 if (!pla.isOP()) return pla.tell(Prefix + "你没有权限更改称号"); // 滤出非OP玩家
-                updatePlayerData(playerName, playerObj.nick, contents, playerObj.messagem, 0, playerObj.chat_format);
+                updatePlayerData(playerName, playerObj.nick, contents, playerObj.messagem, 0, playerObj.chat_format, playerObj.chat_bubbles);
                 mc.broadcast(`${Prefix} "恭喜玩家" ${playerName} "获得" ${contents} 称号`);
             }
         })
@@ -101,7 +101,7 @@ function setNickGUI(player) {//设置称号
                 const contents = id[1]; // 回调的输入内容
 
                 if (!pla.isOP() && playerName != pla.name) return pla.tell(Prefix + "你没有权限更改他人的名称"); // 防止非OP玩家更改他人名称
-                updatePlayerData(playerName, contents, playerObj.title, playerObj.messagem, 0, playerObj.chat_format);
+                updatePlayerData(playerName, contents, playerObj.title, playerObj.messagem, 0, playerObj.chat_format, playerObj.chat_bubbles);
                 pla.tell(Prefix + playerName + "的昵称已修改为: " + contents);
             }
         })
@@ -143,7 +143,7 @@ function setformatGUI(player, playerName) { // 修改聊天格式
     player.sendForm(fm,
         function (pla, id) {
             if (id != null) {
-                updatePlayerData(playerName, playerObj.nick, playerObj.title, playerObj.messagem, 0, id[0]);
+                updatePlayerData(playerName, playerObj.nick, playerObj.title, playerObj.messagem, 0, id[0], playerObj.chat_bubbles);
                 pla.tell(Prefix + '修改成功！');
             }
         })

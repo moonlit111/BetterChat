@@ -61,13 +61,13 @@ mc.listen("onServerStarted", () => {
 
         if (res.rename == "rename") {
             if (!Player.isOP() && resPlayer.realName != Player.realName) return out.error(Prefix + "你没有权限更改他人的昵称"); //判断是否为OP
-            updatePlayerData(resPlayer.realName, contents, playerObj.title, "", 0, playerObj.chat_format);
+            updatePlayerData(resPlayer.realName, contents, playerObj.title, "", 0, playerObj.chat_format, playerObj.chat_bubbles);
             Player.tell(Prefix + resPlayer.realName + "的昵称已修改为: " + contents);
         }
 
         if (res.setitle == "setitle") {
             if (!Player.isOP()) return Player.tell(Prefix + "你没有权限设置称号"); //判断是否为OP
-            updatePlayerData(resPlayer.realName, playerObj.nick, contents, "", 0, playerObj.chat_format);
+            updatePlayerData(resPlayer.realName, playerObj.nick, contents, "", 0, playerObj.chat_format, playerObj.chat_bubbles);
             mc.broadcast(`${Prefix} "恭喜玩家" ${resPlayer.realName} "获得" ${contents} 称号`);
         }
 

@@ -27,7 +27,7 @@ mc.listen("onChat", (player, msg) => {//玩家消息
     const playerObj = getPlayerData(player.realName); // 获取玩家数据对象
 
     if (getConfigData('forbiddenWords').includes(msg)) { // 检查消息是否包含违禁词
-        mc.broadcast(player.realName + " §c发送了敏感词汇§r"); //游戏内消息输出
+        mc.broadcast(`${playerObj.nick}[${player.realName}] §c发送了敏感词汇§r`); //游戏内消息输出
         return false;
     }
 
@@ -38,7 +38,7 @@ mc.listen("onChat", (player, msg) => {//玩家消息
 
     strObj = apiParsing(strObj, player); // 解析API字符串
 
-    updatePlayerData(player.realName, playerObj.nick, playerObj.title, msg, getConfigData('config', "Msg_duration"), playerObj.chat_format); // 更新玩家数据
+    updatePlayerData(player.realName, playerObj.nick, playerObj.title, msg, getConfigData('config', "Msg_duration"), playerObj.chat_format, playerObj.chat_bubbles); // 更新玩家数据
 
     mc.broadcast(strObj);//游戏内消息输出
 
@@ -58,5 +58,5 @@ mc.listen('onPreJoin', (player) => {
         chat_format: "{player_titles}<{player_name}> {player_msg}"
     };
 
-    updatePlayerData(player.realName, playerData.nick, playerData.title, playerData.message, 0, playerData.chat_format); // 更新玩家数据
+    updatePlayerData(player.realName, playerData.nick, playerData.title, playerData.message, 0, playerData.chat_format, playerObj.chat_bubbles); // 更新玩家数据
 });

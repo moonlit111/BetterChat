@@ -2,18 +2,20 @@
     "data": [
         {
             "name": "IcelandDog21",
-            "nick": "aaaa",
-            "title": "aaa",
-            "message": "{pos}",
+            "nick": "我是ojang的爸爸",
+            "title": "交出PBD",
+            "message": "a",
             "time": 0,
+            "chat_bubbles": "{player_titles}{player_name}",
             "chat_format": "{player_titles} {player_name}>> {player_msg}"
         },
         {
             "name": "BattingBoot6802",
             "nick": "aac",
             "title": null,
-            "message": "",
+            "message": "a",
             "time": 0,
+            "chat_bubbles": "{鸡腿} {health}/{maxHealth}\n{player_titles}{player_name}",
             "chat_format": "{player_titles} {player_name}>> {player_msg}"
         }
     ]
