@@ -13,9 +13,9 @@
             "name": "BattingBoot6802",
             "nick": "aac",
             "title": null,
-            "message": "a",
+            "message": null,
             "time": 0,
-            "chat_bubbles": "{鸡腿} {health}/{maxHealth}\n{player_titles}{player_name}",
+            "chat_bubbles": "{鸡腿} {health}/{maxHealth}{换行}{player_titles}{player_name}",
             "chat_format": "{player_titles} {player_name}>> {player_msg}"
         }
     ]
