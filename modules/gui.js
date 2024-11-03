@@ -36,6 +36,7 @@ function GUI(player) {//插件菜单
     fm.addButton("修改名称");
     fm.addButton("修改称号");
     if (player.isOP()) fm.addButton("修改聊天格式");
+    if (player.isOP()) fm.addButton("修改气泡格式");
 
     player.sendForm(fm,
         function (pla, id) {
@@ -47,7 +48,10 @@ function GUI(player) {//插件菜单
                     setTitleGUI(pla)
                     break;
                 case 2:
-                    formatGUI(pla)
+                    selectGUI(pla, true)
+                    break;
+                case 3:
+                    selectGUI(pla, false)
                     break;
             }
         })
@@ -112,7 +116,7 @@ function setNickGUI(player) {//设置称号
  * @param {Object} player - 发送表单的玩家对象
  * @returns {void} - 该函数不返回任何值
  */
-function formatGUI(player) { // 修改聊天格式
+function selectGUI(player, True) { // 修改聊天格式
     const playerList = getPlayerList(); // 获取在线玩家对象列表
     var fm = mc.newCustomForm(); //创建表单对象
 
@@ -122,8 +126,8 @@ function formatGUI(player) { // 修改聊天格式
     player.sendForm(fm,
         function (pla, id) {
             if (!pla.isOP()) return pla.tell(Prefix + '你无权使用'); // 滤出非OP玩家
-            if (id != null) setformatGUI(pla, playerList[id[0]]); // 获取数据后转到设置格式菜单
-        })
+            if (id != null) True ? setFormatGUI(pla, playerList[id[0]]) : setBubblesGUI(pla, playerList[id[0]]); // 获取数据后转到设置格式菜单
+        });
 }
 
 /**
@@ -132,7 +136,7 @@ function formatGUI(player) { // 修改聊天格式
  * @param {string} playerName - 被操作的玩家名称
  * @returns {void} - 该函数不返回任何值
  */
-function setformatGUI(player, playerName) { // 修改聊天格式
+function setFormatGUI(player, playerName) { // 修改聊天格式
     const playerObj = getPlayerData(playerName); // 获取玩家数据对象
     var fm = mc.newCustomForm(); //创建表单对象
 
@@ -146,10 +150,27 @@ function setformatGUI(player, playerName) { // 修改聊天格式
                 updatePlayerData(playerName, playerObj.nick, playerObj.title, playerObj.messagem, 0, id[0], playerObj.chat_bubbles);
                 pla.tell(Prefix + '修改成功！');
             }
-        })
+        });
+}
+
+function setBubblesGUI(player, playerName) {
+    const playerObj = getPlayerData(playerName); // 获取玩家数据对象
+    var fm = mc.newCustomForm(); //创建表单对象
+
+    fm.setTitle('BetterChat');
+    fm.addInput('输入新的气泡格式', "", playerObj.chat_bubbles);
+    fm.addLabel('注:\n{player_titles}是称号\n{player_name}是玩家名称\n{player_msg}是玩家消息\n这些是只有聊天格式有的 你也可以结合使用其他插件支持的api');
+
+    player.sendForm(fm,
+        function (pla, id) {
+            if (id != null) {
+                updatePlayerData(playerName, playerObj.nick, playerObj.title, playerObj.messagem, 0, playerObj.chat_format, id[0]);
+                pla.tell(Prefix + '修改成功！');
+            }
+        });
 }
 
 module.exports = {
     GUI,
-    formatGUI
+    selectGUI
 }

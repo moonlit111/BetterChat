@@ -21,7 +21,7 @@
             佛祖保佑       永无BUG
 */
 
-const { GUI, formatGUI } = require("./BetterChat/modules/gui");
+const { GUI, selectGUI } = require("./BetterChat/modules/gui");
 const { getConfigData, getPlayerData, updatePlayerData } = require("./BetterChat/modules/data");
 const event = require("./BetterChat/modules/event");
 const Prefix = getConfigData('config', "Prefix");
@@ -42,7 +42,7 @@ mc.listen("onServerStarted", () => {
     BetterChat.mandatory('setitle', ParamType.Enum, 'setitle', 1);
     BetterChat.overload(['setitle', 'player', 'string']);
 
-    BetterChat.setEnum('cmd', ['gui', 'format']);
+    BetterChat.setEnum('cmd', ['gui', 'format', 'bubbles']);
     BetterChat.mandatory('cmd', ParamType.Enum, 'cmd', 1);
     BetterChat.overload(['cmd']);
 
@@ -52,7 +52,9 @@ mc.listen("onServerStarted", () => {
         if (res.cmd == "gui") {
             return Player ? GUI(Player) : out.error("控制台无法使用菜单");
         } else if (res.cmd == "format") {
-            return Player ? formatGUI(Player) : out.error("控制台无法使用菜单");
+            return Player ? selectGUI(Player, true) : out.error("控制台无法使用菜单");
+        } else if (res.cmd == "bubbles") {
+            return Player ? selectGUI(Player, false) : out.error("控制台无法使用菜单");
         }
         
         const resPlayer = res.player[0]; // 被操作的玩家对象
