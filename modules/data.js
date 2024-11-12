@@ -60,7 +60,7 @@ function getConfigData(type, key) {
  * @param {string} chat_bubbles - 聊天头顶气泡的格式
  * @returns {void} - 该函数用于修改玩家数据文件 不返回任何值
  */
-function updatePlayerData(name, nick, title, message, time, chat_format, chat_bubbles) {
+function updatePlayerData(name, nick, title, message, time,chat_bubbles, chat_format) {
     let data = Info.get("data") || [];
 
     const existingIndex = data.findIndex(player => player.name === name); // 查找玩家 返回其在数组中的索引 如果找不到该玩家 则返回 -1
@@ -143,6 +143,12 @@ function getValueFromPath(object, path) {
 
     return object; // 返回查找结果
 }
+
+/**
+ * 获取所有玩家的列表
+ * 该函数从存储的数据中检索所有玩家的名称，并将它们作为数组返回
+ * @returns {Array<string>} 包含所有玩家名称的数组
+ */
 function getPlayerList() {
     const playerList = [];
     const data = Info.get("data") || [];
@@ -151,7 +157,6 @@ function getPlayerList() {
     }
     return playerList;
 }
-
 
 setInterval(() => {
     const players = mc.getOnlinePlayers(); // 获取在线玩家对象数组
@@ -167,7 +172,7 @@ setInterval(() => {
         if (playerObj.time === 0) {
             player.rename(displayName); // 复原玩家名称
         } else {
-            updatePlayerData(player.realName, playerObj.nick, playerObj.title, playerObj.message, playerObj.time - 1, playerObj.chat_format, playerObj.chat_bubbles); // 减少时间
+            updatePlayerData(player.realName, playerObj.nick, playerObj.title, playerObj.message, playerObj.time - 1, playerObj.chat_bubbles, playerObj.chat_format); // 减少时间
             player.rename(`${playerObj.message}\n${displayName}`); // 设置头顶聊天气泡
         }
     });
